@@ -1,16 +1,26 @@
 <template>
   <div>
-    <input type="text" placeholder="Digite o CEP" v-model="cep">
+    <input class="teste" type="text" placeholder="Digite o CEP" v-model="cep">
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'BuscaCep',
   data () {
     return {
-      cep: ''
+      cep: '20081130'
     }
+  },
+  created () {
+    axios.get('https://viacep.com.br/ws/' + this.cep + '/json').then(response => {
+      this.posts = response.data
+    })
+      .catch(e => {
+        this.errors.push(e)
+      })
   }
 }
 </script>
