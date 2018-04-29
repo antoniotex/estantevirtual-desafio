@@ -1,6 +1,9 @@
 <template>
   <div>
+    {{cep}}
     <input class="teste" type="text" placeholder="Digite o CEP" v-model="cep">
+    <p>{{posts.bairro}}</p>
+    <p>{{erros}}</p>
   </div>
 </template>
 
@@ -11,18 +14,28 @@ export default {
   name: 'BuscaCep',
   data () {
     return {
-      cep: '20081130'
+      cidade: '',
+      cep: '22244400',
+      posts: [],
+      erros: ''
     }
   },
-  created () {
-    axios.get('https://viacep.com.br/ws/' + this.cep + '/json').then(response => {
-      this.posts = response.data
-    })
-      .catch(e => {
-        this.errors.push(e)
+  methods: {
+    getCity: function () {
+      axios.get('https://viacep.com.br/ws/' + this.cep + '/json').then(response => {
+        this.posts = response.data
+        this.posts.erro === true ? this.erros = 'CEP NÃO ENCONTRADO' : console.log('falso')
       })
+        .catch(e => {
+          console.log('teste erros')
+        })
+    }
+  },
+  mounted: function () {
+    this.getCity()
   }
 }
+console.log('Aqui chega 1')
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped></style>
