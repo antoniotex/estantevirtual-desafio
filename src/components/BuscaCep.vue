@@ -1,7 +1,7 @@
 <template>
   <div>
     {{cep}}
-    <input class="teste" type="text" placeholder="Digite o CEP" v-model="cep">
+    <input class="teste" type="text" placeholder="Digite o CEP" v-model="cep" maxlength="8">
     <p>{{posts.bairro}}</p>
     <p>{{erros}}</p>
   </div>
@@ -15,7 +15,7 @@ export default {
   data () {
     return {
       cidade: '',
-      cep: '22244400',
+      cep: '',
       posts: [],
       erros: ''
     }
@@ -29,6 +29,18 @@ export default {
         .catch(e => {
           console.log('teste erros')
         })
+    }
+  },
+  watch: {
+    cep: function () {
+      if (this.cep.length === 8) {
+        console.log('Chegou em 8!!!')
+        this.getCity()
+        this.erros = ''
+      }
+      if (this.cep.length < 8) {
+        console.log('menor que 8')
+      }
     }
   },
   mounted: function () {
