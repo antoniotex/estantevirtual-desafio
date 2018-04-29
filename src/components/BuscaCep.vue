@@ -4,6 +4,9 @@
     <p>{{rua}}</p>
     <p>{{cidade + uf}}</p>
     <p>{{erros}}</p>
+    <ul>
+      <li v-for='armaz in arma' :key='armaz.id'>{{armaz}}</li>
+    </ul>
   </div>
 </template>
 
@@ -20,7 +23,8 @@ export default {
       uf: '',
       cep: '',
       posts: [],
-      erros: ''
+      erros: '',
+      arma: []
     }
   },
   methods: {
@@ -33,10 +37,11 @@ export default {
           this.rua = response.data.logradouro
           this.cidade = response.data.localidade + ', '
           this.uf = response.data.uf
+          this.arma.push({rua: this.rua, cidade: this.cidade, uf: this.uf})
         }
       })
         .catch(e => {
-          this.erros.push(e)
+          // this.erros.push(e)
         })
     }
   },
@@ -54,7 +59,19 @@ export default {
       } else {
         this.erros = ''
       }
+    },
+    arma: {
+      handler () {
+        console.log('Todos changed!')
+        localStorage.setItem('arma', JSON.stringify(this.arma))
+      },
+      deep: true
     }
+  },
+  mounted () {
+    console.log('App mounted!')
+    if (localStorage.getItem('arma')) this.arma = JSON.parse(localStorage.getItem('arma'))
+    this.getCity()
   }
 }
 </script>
