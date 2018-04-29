@@ -2,13 +2,13 @@
   <div>
     <input class="teste" type="text" placeholder="Digite o CEP" v-model="cep" maxlength="8">
     <button v-on:click='addCep'>Add Cep</button>
-    <button v-on:click='delCep'>Exclui Cep</button>
     <p>{{rua}}</p>
     <p>{{cidade + uf}}</p>
     <p>{{erros}}</p>
     <ul>
-      <li v-for='armaz in arma' :key='armaz.id'>
-        {{armaz.id}}
+      <li v-for='(item, key) in arma' :key='item.id'>
+        {{item}}
+        <button v-on:click='delCep(key)'>Exclui Cep</button>
       </li>
     </ul>
   </div>
@@ -34,9 +34,10 @@ export default {
   methods: {
     addCep: function (e) {
       this.arma.push({rua: this.rua, cidade: this.cidade, uf: this.uf})
+      this.cep = ''
     },
-    delCep: function (e) {
-      this.arma.pop()
+    delCep: function (index) {
+      this.arma.splice(index, 1)
     },
     getCity: function () {
       axios.get('https://viacep.com.br/ws/' + this.cep + '/json').then(response => {
