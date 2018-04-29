@@ -1,11 +1,15 @@
 <template>
   <div>
     <input class="teste" type="text" placeholder="Digite o CEP" v-model="cep" maxlength="8">
+    <button v-on:click='addCep'>Add Cep</button>
+    <button v-on:click='delCep'>Exclui Cep</button>
     <p>{{rua}}</p>
     <p>{{cidade + uf}}</p>
     <p>{{erros}}</p>
     <ul>
-      <li v-for='armaz in arma' :key='armaz.id'>{{armaz}}</li>
+      <li v-for='armaz in arma' :key='armaz.id'>
+        {{armaz.id}}
+      </li>
     </ul>
   </div>
 </template>
@@ -28,6 +32,12 @@ export default {
     }
   },
   methods: {
+    addCep: function (e) {
+      this.arma.push({rua: this.rua, cidade: this.cidade, uf: this.uf})
+    },
+    delCep: function (e) {
+      this.arma.pop()
+    },
     getCity: function () {
       axios.get('https://viacep.com.br/ws/' + this.cep + '/json').then(response => {
         this.posts = response.data
@@ -37,11 +47,10 @@ export default {
           this.rua = response.data.logradouro
           this.cidade = response.data.localidade + ', '
           this.uf = response.data.uf
-          this.arma.push({rua: this.rua, cidade: this.cidade, uf: this.uf})
         }
       })
         .catch(e => {
-          // this.erros.push(e)
+          console.log(e)
         })
     }
   },
@@ -71,7 +80,6 @@ export default {
   mounted () {
     console.log('App mounted!')
     if (localStorage.getItem('arma')) this.arma = JSON.parse(localStorage.getItem('arma'))
-    this.getCity()
   }
 }
 </script>
