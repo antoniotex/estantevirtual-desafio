@@ -16,8 +16,21 @@ export default {
 </script>
 
 <style>
+*{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+html, body{
+  height: 100%;
+}
 #app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   border: 3px solid red;
+  height: 100%;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
